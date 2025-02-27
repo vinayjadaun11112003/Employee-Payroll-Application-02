@@ -1,38 +1,48 @@
 package com.bridgelabz.employeepayrollapp.controller;
+
 import com.bridgelabz.employeepayrollapp.dto.EmployeeRequestDTO;
 import com.bridgelabz.employeepayrollapp.dto.EmployeeResponseDTO;
+import com.bridgelabz.employeepayrollapp.model.Employee;
+import com.bridgelabz.employeepayrollapp.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-// RestController to send the response
 @RestController
 @RequestMapping("/employeepayrollservice")
 public class EmployeeController {
 
-    // Create a controller to GET employee
-    @GetMapping("/get")
-    public EmployeeResponseDTO getEmployee() {
-        return new EmployeeResponseDTO("Ankit" , 45000);
+    // Injecting EmployeeService using @Autowired
+
+    private EmployeeService employeeService;
+    @Autowired
+    public EmployeeController(EmployeeService service){
+        this.employeeService = service;
     }
 
-    // addEmployee method to add the Employee
+    // GET Employee
+    @GetMapping("/getById/{id}")
+    public EmployeeResponseDTO getEmployee(@PathVariable Long id) {
+        Employee a = employeeService.getEmployeeById(id);
+        return new EmployeeResponseDTO(a.getId(),a.getName(),a.getSalary());
+    }
+
+    // POST - Add Employee
     @PostMapping("/create")
-    public EmployeeResponseDTO  addEmployee(@RequestBody EmployeeRequestDTO employeeRequestDTO) {
-        return new EmployeeResponseDTO(employeeRequestDTO.getName(), employeeRequestDTO.getSalary());
+    public EmployeeResponseDTO addEmployee(@RequestBody EmployeeRequestDTO employeeRequestDTO) {
+        Employee a= employeeService.addEmployee( new Employee(employeeRequestDTO.getId() ,employeeRequestDTO.getName(), employeeRequestDTO.getSalary()));
+        return new EmployeeResponseDTO(a.getId(),a.getName(),a.getSalary());
     }
 
-    // PUT - Update employee by ID in existing database
+    // PUT - Update Employee
     @PutMapping("/update/{id}")
-    public EmployeeResponseDTO updateEmployee(@PathVariable Long id,
-                                              @RequestBody EmployeeRequestDTO employeeRequestDTO) {
-        // Logic to update the employee with new details
-        return new EmployeeResponseDTO(employeeRequestDTO.getName(), employeeRequestDTO.getSalary());
+    public EmployeeResponseDTO updateEmployee(@PathVariable Long id , @RequestBody EmployeeRequestDTO employeeRequestDTO) {
+        Employee a= employeeService.updateEmployee(id , new Employee(employeeRequestDTO.getId() , employeeRequestDTO.getName() , employeeRequestDTO.getSalary()));
+        return new EmployeeResponseDTO(a.getId(),a.getName(),a.getSalary());
     }
 
-
+    // DELETE - Delete Employee
     @DeleteMapping("/delete/{id}")
-    public String deleteEmployee(@PathVariable Long id) {
-        // Logic to delete the employee from the database
-        return "Employee with ID " + id + " deleted successfully!";
+    public boolean deleteEmployee(@PathVariable Long id) {
+        return employeeService.deleteEmployee(id);
     }
-
 }

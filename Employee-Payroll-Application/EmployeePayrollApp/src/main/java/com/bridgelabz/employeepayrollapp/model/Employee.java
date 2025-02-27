@@ -21,7 +21,8 @@ public class Employee {
     }
 
     // Parameterized Constructor to initialize the Employee details
-    public Employee(String name, double salary) {
+    public Employee(Long id,String name, double salary) {
+        this.id=id;
         this.name = name;
         this.salary = salary;
     }
