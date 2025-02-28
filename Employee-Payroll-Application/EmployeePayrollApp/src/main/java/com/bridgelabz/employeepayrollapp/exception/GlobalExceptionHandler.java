@@ -26,4 +26,12 @@ public class GlobalExceptionHandler {
         // Return structured JSON response
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+    // Handle Employee Not Found Exception
+    @ExceptionHandler(EmployeeNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleEmployeeNotFound(EmployeeNotFoundException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 }
