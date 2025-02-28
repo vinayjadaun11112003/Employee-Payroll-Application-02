@@ -8,9 +8,7 @@ public class Employee {
 
     // Primary Key
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     // Employee name
     private double salary;
     // Employee salary
@@ -21,8 +19,8 @@ public class Employee {
     }
 
     // Parameterized Constructor to initialize the Employee details
-    public Employee(Long id,String name, double salary) {
-        this.id=id;
+    public Employee(Long id , String name, double salary) {
+        this.id = id;
         this.name = name;
         this.salary = salary;
     }
