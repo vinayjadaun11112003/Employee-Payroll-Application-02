@@ -1,5 +1,7 @@
 package com.bridgelabz.employeepayrollapp.dto;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 // DTO (Data Transfer Object) for Employee requests.
@@ -13,6 +15,8 @@ public class EmployeeRequestDTO {
     // Data members for the employee details. (id, name, salary)
     // Used lombok annotations to generate getters, setters, toString, constructor, etc.
     private Long id;
+    @NotEmpty(message = "Name cannot be empty")
+    @Pattern(regexp = "^[A-Z][a-zA-Z\\s]*$", message = "Name must start with an uppercase letter and contain only alphabets and spaces")
     private String name;
     private double salary;
 
